@@ -1,21 +1,31 @@
 // Archivo: pagina-schrodinger/api/chat.js
 export default async function handler(req, res) {
-  // Configurar encabezados CORS y permitir solo POST
-  if (req.method !== 'POST') {
-    return res.status(405).json({ error: 'Método no permitido' });
+  // Configurar CORS
+  res.setHeader('Access-Control-Allow-Origin', '*');
+  res.setHeader('Access-Control-Allow-Methods', 'POST, OPTIONS');
+  res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
+
+  if (req.method === 'OPTIONS') {
+    return res.status(200).end();
   }
 
-  const { message } = req.body;
+  if (req.method !== 'POST') {
+    return res.status(405).json({ error: 'Método no permitido. Usa POST.' });
+  }
+
+  const { message } = req.body || {};
 
   if (!message) {
-    return res.status(400).json({ error: 'El mensaje está vacío' });
+    return res.status(400).json({ error: 'El mensaje está vacío.' });
   }
 
   const apiKey = process.env.GEMINI_API_KEY;
 
   if (!apiKey) {
-    console.error("Falta la variable de entorno GEMINI_API_KEY en Vercel");
-    return res.status(500).json({ error: 'La API Key no está configurada en el servidor' });
+    console.error("ERROR: No se encontró la variable GEMINI_API_KEY en Vercel.");
+    return res.status(500).json({ 
+      error: 'La API Key (GEMINI_API_KEY) no está configurada en las Variables de Entorno de Vercel.' 
+    });
   }
 
   const systemInstruction = `
@@ -45,39 +55,40 @@ REGLAS:
 `;
 
   try {
-    // Petición directa REST a la API de Gemini sin librerías externas
-    const response = await fetch(
-      `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${apiKey}`,
-      {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
+    // Llamada configurada para gemini-3.8-flash
+    const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-3.8-flash:generateContent?key=${apiKey}`;
+
+    const response = await fetch(url, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        system_instruction: {
+          parts: [{ text: systemInstruction }]
         },
-        body: JSON.stringify({
-          system_instruction: {
-            parts: [{ text: systemInstruction }]
-          },
-          contents: [
-            {
-              parts: [{ text: message }]
-            }
-          ]
-        }),
-      }
-    );
+        contents: [
+          {
+            parts: [{ text: message }]
+          }
+        ]
+      }),
+    });
 
     const data = await response.json();
 
     if (!response.ok) {
-      console.error("Error devuelto por Google AI Studio:", data);
-      return res.status(500).json({ error: data.error?.message || 'Error al comunicarse con Gemini' });
+      console.error("Error devuelto por la API de Gemini:", data);
+      return res.status(response.status).json({ 
+        error: `Error de Google AI Studio (${response.status}): ${data.error?.message || 'Clave de API o petición inválida.'}` 
+      });
     }
 
-    const reply = data.candidates?.[0]?.content?.parts?.[0]?.text || "No se pudo generar respuesta.";
+    const reply = data.candidates?.[0]?.content?.parts?.[0]?.text || "No se pudo generar una respuesta válida.";
 
     return res.status(200).json({ reply });
   } catch (error) {
-    console.error('Error interno del servidor:', error);
-    return res.status(500).json({ error: 'Error interno al procesar la consulta' });
+    console.error('Error durante la ejecución del servidor:', error);
+    return res.status(500).json({ error: `Error interno en el servidor: ${error.message}` });
   }
 }
