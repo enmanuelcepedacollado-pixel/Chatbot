@@ -1,4 +1,8 @@
 // Archivo: pagina-schrodinger/api/chat.js
+
+// Función auxiliar para pausar la ejecución unos milisegundos
+const wait = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
+
 export default async function handler(req, res) {
   // Configurar CORS
   res.setHeader('Access-Control-Allow-Origin', '*');
@@ -54,55 +58,67 @@ REGLAS:
 - IMPORTANTE: No afirmes que tienes información específica de la página si no se te ha proporcionado en el contexto.
 `;
 
-  // Lista de modelos ordenados por preferencia en caso de saturación (503)
+  // Lista de modelos variando entre líneas Flash y Pro para máxima disponibilidad
   const modelsToTry = [
-    'gemini-3.8-flash',
-    'gemini-2.5-flash',
-    'gemini-1.5-flash'
+    'gemini-1.5-flash',
+    'gemini-1.5-pro',
+    'gemini-2.0-flash-exp',
+    'gemini-2.5-flash'
   ];
 
   let lastError = null;
 
   for (const model of modelsToTry) {
-    try {
-      const url = `https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent?key=${apiKey}`;
+    // Intentaremos hasta 2 veces por cada modelo en caso de un 503 puntual
+    for (let attempt = 1; attempt <= 2; attempt++) {
+      try {
+        const url = `https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent?key=${apiKey}`;
 
-      const response = await fetch(url, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          system_instruction: {
-            parts: [{ text: systemInstruction }]
+        const response = await fetch(url, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
           },
-          contents: [
-            {
-              parts: [{ text: message }]
-            }
-          ]
-        }),
-      });
+          body: JSON.stringify({
+            system_instruction: {
+              parts: [{ text: systemInstruction }]
+            },
+            contents: [
+              {
+                parts: [{ text: message }]
+              }
+            ]
+          }),
+        });
 
-      const data = await response.json();
+        const data = await response.json();
 
-      if (response.ok) {
-        const reply = data.candidates?.[0]?.content?.parts?.[0]?.text || "No se pudo generar una respuesta válida.";
-        return res.status(200).json({ reply });
+        if (response.ok) {
+          const reply = data.candidates?.[0]?.content?.parts?.[0]?.text || "No se pudo generar una respuesta válida.";
+          return res.status(200).json({ reply });
+        }
+
+        lastError = `[${model}] Error ${response.status}: ${data.error?.message || 'Error de servicio'}`;
+
+        // Si es 503 o 429 (saturación o límite de peticiones), esperamos 800ms e intentamos de nuevo
+        if (response.status === 503 || response.status === 429) {
+          console.warn(`Modelo ${model} ocupado (${response.status}). Intento ${attempt} de 2...`);
+          if (attempt < 2) await wait(800);
+        } else {
+          // Si es un error distinto (como 400 Bad Request), saltamos al siguiente modelo inmediatamente
+          break;
+        }
+
+      } catch (err) {
+        lastError = err.message;
+        console.error(`Excepción conectando a ${model}:`, err);
+        break;
       }
-
-      // Si el servidor está sobrecargado (503) o el modelo no está disponible, guardamos el error e intentamos el siguiente
-      lastError = `Error de Google AI Studio (${response.status}): ${data.error?.message || 'Error de servicio'}`;
-      console.warn(`El modelo ${model} fallo con estado ${response.status}. Intentando modelo alternativo...`);
-
-    } catch (err) {
-      lastError = err.message;
-      console.error(`Error al conectar con ${model}:`, err);
     }
   }
 
-  // Si todos los modelos fallan por saturación de Google
+  // Si tras recorrer todos los modelos de respaldo sigue fallando
   return res.status(503).json({
-    error: `Servidores de Google AI actualmente sobrecargados. Por favor intenta de nuevo en unos segundos. Detalle: ${lastError}`
+    error: `Los servidores de Google se encuentran con alta demanda en este momento. Por favor, reintenta enviar tu mensaje en unos segundos.`
   });
 }
