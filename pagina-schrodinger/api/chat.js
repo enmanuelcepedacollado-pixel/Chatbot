@@ -1,8 +1,6 @@
-// Archivo: api/chat.js
-import { GoogleGenAI } from '@google/genai';
-
+// Archivo: pagina-schrodinger/api/chat.js
 export default async function handler(req, res) {
-  // Permitir solo peticiones de tipo POST
+  // Configurar encabezados CORS y permitir solo POST
   if (req.method !== 'POST') {
     return res.status(405).json({ error: 'Método no permitido' });
   }
@@ -13,12 +11,14 @@ export default async function handler(req, res) {
     return res.status(400).json({ error: 'El mensaje está vacío' });
   }
 
-  try {
-    // Inicializa la conexión con la API Key guardada de forma segura en Vercel
-    const ai = new GoogleGenAI({ apiKey: process.env.GEMINI_API_KEY });
+  const apiKey = process.env.GEMINI_API_KEY;
 
-    // Definición de las instrucciones del sistema según tus requisitos exactos
-    const systemInstruction = `
+  if (!apiKey) {
+    console.error("Falta la variable de entorno GEMINI_API_KEY en Vercel");
+    return res.status(500).json({ error: 'La API Key no está configurada en el servidor' });
+  }
+
+  const systemInstruction = `
 Eres Nigg-ola Tesla, el asistente virtual de una página web educativa especializada en la Función de Onda de Schrödinger y Física Cuántica.
 
 OBJETIVO:
@@ -44,19 +44,40 @@ REGLAS:
 - IMPORTANTE: No afirmes que tienes información específica de la página si no se te ha proporcionado en el contexto.
 `;
 
-    // Generación de contenido usando Gemini
-    const response = await ai.models.generateContent({
-      model: 'gemini-2.5-flash',
-      contents: message,
-      config: {
-        systemInstruction: systemInstruction,
-        temperature: 0.3,
+  try {
+    // Petición directa REST a la API de Gemini sin librerías externas
+    const response = await fetch(
+      `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${apiKey}`,
+      {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          system_instruction: {
+            parts: [{ text: systemInstruction }]
+          },
+          contents: [
+            {
+              parts: [{ text: message }]
+            }
+          ]
+        }),
       }
-    });
+    );
 
-    return res.status(200).json({ reply: response.text });
+    const data = await response.json();
+
+    if (!response.ok) {
+      console.error("Error devuelto por Google AI Studio:", data);
+      return res.status(500).json({ error: data.error?.message || 'Error al comunicarse con Gemini' });
+    }
+
+    const reply = data.candidates?.[0]?.content?.parts?.[0]?.text || "No se pudo generar respuesta.";
+
+    return res.status(200).json({ reply });
   } catch (error) {
-    console.error('Error en la comunicación con Gemini:', error);
+    console.error('Error interno del servidor:', error);
     return res.status(500).json({ error: 'Error interno al procesar la consulta' });
   }
 }
