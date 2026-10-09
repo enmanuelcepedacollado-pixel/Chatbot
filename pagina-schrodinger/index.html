@@ -60,7 +60,7 @@
         Matemáticamente, es una función de valores <strong>complejos</strong> (contiene la unidad imaginaria <em>i</em>). Sus variables son el espacio ($\mathbf{r}$ o $x$) y el tiempo ($t$).
       </p>
       <p>
-        <strong>Aclaración fundamental:</strong> La función de onda no representa una onda material física u ordinaria (como una ola de agua o una onda sonora). Su módulo al cuadrado ($|\Psi|^2$) proporciona la <strong>densidad de probabilidad</strong> de encontrar la partícula en un punto específico del espacio al realizar una medición.
+        <strong>Aclaración fundamental:</strong> La función de onda no representa una onda material física u ordinaria (como una ola de agua o una onda sonora). Su módulo al cuadrado ($\vert{}\Psi\vert{}^2$) proporciona la <strong>densidad de probabilidad</strong> de encontrar la partícula en un punto específico del espacio al realizar una medición.
       </p>
 
       <div class="grid-2">
@@ -145,7 +145,7 @@
       </div>
 
       <div class="note-box">
-        <strong>Diferencia clave:</strong> mientras que $\Psi(x,t)$ puede ser una magnitud compleja no medible directamente, $|\Psi(x,t)|^2$ es un número real, no negativo y directamente observable experimentalmente como distribución de probabilidad.
+        <strong>Diferencia clave:</strong> mientras que $\Psi(x,t)$ puede ser una magnitud compleja no medible directamente, $\vert{}\Psi(x,t)\vert{}^2$ es un número real, no negativo y directamente observable experimentalmente como distribución de probabilidad.
       </div>
     </section>
 
@@ -153,18 +153,15 @@
     <section id="graficos" class="card">
       <h2>4. Representación Gráfica de la Función de Onda</h2>
       <p>
-        Es vital diferenciar entre la parte real de la función de onda $Re[\Psi(x)]$ y la densidad de probabilidad $|\Psi(x)|^2$.
+        Es vital diferenciar entre la parte real de la función de onda $Re[\Psi(x)]$ y la densidad de probabilidad $\vert{}\Psi(x)\vert{}^2$.
       </p>
       
       <div class="graphic-grid">
         <div class="graphic-card">
           <svg viewBox="0 0 400 180" class="svg-diagram">
-            <!-- Ejes -->
             <line x1="20" y1="90" x2="380" y2="90" stroke="#4a5568" stroke-width="2"/>
             <line x1="200" y1="10" x2="200" y2="170" stroke="#4a5568" stroke-width="1" stroke-dasharray="4"/>
-            <!-- Onda Sinusoidal Re[Psi] -->
             <path d="M 20 90 Q 65 10, 110 90 T 200 90 T 290 90 T 380 90" fill="none" stroke="#00f3ff" stroke-width="3"/>
-            <!-- Nodos -->
             <circle cx="20" cy="90" r="4" fill="#bd00ff"/>
             <circle cx="110" cy="90" r="4" fill="#bd00ff"/>
             <circle cx="200" cy="90" r="4" fill="#bd00ff"/>
@@ -177,12 +174,10 @@
 
         <div class="graphic-card">
           <svg viewBox="0 0 400 180" class="svg-diagram">
-            <!-- Ejes -->
             <line x1="20" y1="160" x2="380" y2="160" stroke="#4a5568" stroke-width="2"/>
-            <!-- Densidad de Probabilidad |Psi|^2 -->
             <path d="M 20 160 Q 65 20, 110 160 Q 155 20, 200 160 Q 245 20, 290 160 Q 335 20, 380 160" fill="rgba(0, 243, 255, 0.2)" stroke="#00f3ff" stroke-width="3"/>
           </svg>
-          <h4>Densidad de Probabilidad ($|\Psi|^2$)</h4>
+          <h4>Densidad de Probabilidad ($\vert{}\Psi\vert{}^2$)</h4>
           <p>Siempre no negativa ($\ge 0$). Eleva los valles negativos a crestas positivas, representando la probabilidad espacial.</p>
         </div>
       </div>
@@ -230,7 +225,7 @@
     <section id="particula-caja" class="card">
       <h2>6. Ejemplo Práctico: Partícula en una Caja</h2>
       <p>
-        Considere una partícula confina en un pozo de potencial infinito unidimensional de longitud $L$ ($V=0$ para $0 < x < L$, y $V=\infty$ fuera).
+        Considere una partícula confinada en un pozo de potencial infinito unidimensional de longitud $L$ ($V=0$ para $0 < x < L$, y $V=\infty$ fuera).
       </p>
 
       <div class="math-box">
@@ -279,31 +274,27 @@
     </section>
 
     <!-- Sección 8: Chatbot Interactivo con Gemini -->
-    <section id="chatbot" class="card chatbot-section">
-      <h2>7. Asistente Cuántico (IA con Gemini)</h2>
+    <section id="chatbot" class="card">
+      <h2>7. Asistente Cuántico (Nigg-ola Tesla)</h2>
       <p>
-        Utiliza nuestro asistente interactivo configurado con la tecnología de Google AI Studio / Gemini para resolver tus dudas sobre ondas de Schrödinger, niveles de energía u orbitales.
+        Haz tus preguntas sobre la función de onda de Schrödinger, niveles de energía o la interpretación de Born a nuestro asistente educativo impulsado por IA.
       </p>
 
-      <!-- Integración No-Code de Chatbot (Voiceflow/Zapier/Custom Embed) -->
+      <!-- Interfaz Real del Chatbot -->
       <div class="chat-container-placeholder">
         <div class="chat-header">
-          <span class="status-dot"></span> Asistente Cuántico - Gemini Engine
+          <span class="status-dot"></span> Nigg-ola Tesla - Asistente Cuántico
         </div>
         <div class="chat-body-mock">
-          <iframe 
-            src="https://copilotstudio.microsoft.com/ or_voiceflow_or_zapier_embed_url" 
-            title="Asistente Cuántico Gemini"
-            class="chat-iframe"
-            loading="lazy">
-          </iframe>
-          <div class="iframe-fallback">
-            <p><strong>Nota de Integración No-Code:</strong></p>
-            <p>Para visualizar la ventana de chat activa sin usar JavaScript en este código:</p>
-            <ul>
-              <li>Crea un Agente en Voiceflow, Zapier Interfaces o Google Dialogflow utilizando la API de Gemini.</li>
-              <li>Sustituye la propiedad <code>src</code> del <code>iframe</code> anterior por la URL del widget público provisto por la plataforma No-Code.</li>
-            </ul>
+          <div id="chat-box" style="height: 320px; overflow-y: auto; background: #0a0e17; padding: 1rem; border-radius: 8px; margin-bottom: 1rem; border: 1px solid #2d3748; font-family: var(--font-main);">
+            <div style="margin-top: 0.5rem; color: #e2e8f0;">
+              <strong>Nigg-ola Tesla:</strong> ¡Saludos! Soy Nigg-ola Tesla, tu asistente de física cuántica. ¿Qué duda tienes sobre la función de onda de Schrödinger o sus aplicaciones?
+            </div>
+          </div>
+
+          <div style="display: flex; gap: 0.5rem;">
+            <input type="text" id="user-input" placeholder="Escribe tu pregunta sobre física cuántica..." style="flex-grow: 1; padding: 0.8rem; border-radius: 6px; border: 1px solid #2d3748; background: #121824; color: #fff; font-size: 0.95rem; outline: none;">
+            <button onclick="preguntarGemini()" style="padding: 0.8rem 1.5rem; background: #00f3ff; color: #0a0e17; font-weight: bold; border: none; border-radius: 6px; cursor: pointer; transition: background 0.3s ease;">Enviar</button>
           </div>
         </div>
       </div>
@@ -333,6 +324,62 @@
   <footer>
     <p>© 2026 Plataforma Educativa de Física Cuántica. Diseñado con HTML y CSS exclusivamente.</p>
   </footer>
+
+  <!-- Script de Conexión con el Backend /api/chat -->
+  <script>
+    async function preguntarGemini() {
+      const input = document.getElementById('user-input');
+      const chatBox = document.getElementById('chat-box');
+      const userText = input.value.trim();
+
+      if (!userText) return;
+
+      // 1. Mostrar mensaje del usuario en pantalla
+      chatBox.innerHTML += `<div style="margin-top:0.8rem; color:#00f3ff; text-align: right;"><strong>Tú:</strong> ${userText}</div>`;
+      input.value = '';
+      chatBox.scrollTop = chatBox.scrollHeight;
+
+      // Indicador visual de "Pensando..."
+      const loadingId = 'loading-' + Date.now();
+      chatBox.innerHTML += `<div id="${loadingId}" style="margin-top:0.8rem; color:#a0aec0;"><em>Nigg-ola Tesla está procesando la respuesta...</em></div>`;
+      chatBox.scrollTop = chatBox.scrollHeight;
+
+      try {
+        // 2. Conexión con la función Serverless /api/chat
+        const res = await fetch('/api/chat', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ message: userText })
+        });
+
+        const data = await res.json();
+        
+        // Remover el mensaje de carga
+        const loadingElem = document.getElementById(loadingId);
+        if (loadingElem) loadingElem.remove();
+
+        if (data.reply) {
+          // 3. Mostrar la respuesta de Nigg-ola Tesla
+          chatBox.innerHTML += `<div style="margin-top:0.8rem; color:#e2e8f0;"><strong>Nigg-ola Tesla:</strong> ${data.reply}</div>`;
+        } else {
+          chatBox.innerHTML += `<div style="margin-top:0.8rem; color:#ff4d4d;"><strong>Error:</strong> ${data.error || 'No se obtuvo respuesta.'}</div>`;
+        }
+      } catch (err) {
+        const loadingElem = document.getElementById(loadingId);
+        if (loadingElem) loadingElem.remove();
+        chatBox.innerHTML += `<div style="margin-top:0.8rem; color:#ff4d4d;"><strong>Error de conexión:</strong> No se pudo conectar con el servidor.</div>`;
+      }
+      
+      chatBox.scrollTop = chatBox.scrollHeight;
+    }
+
+    // Permitir enviar mensaje al presionar la tecla "Enter"
+    document.getElementById('user-input').addEventListener('keypress', function (e) {
+      if (e.key === 'Enter') {
+        preguntarGemini();
+      }
+    });
+  </script>
 
 </body>
 </html>
