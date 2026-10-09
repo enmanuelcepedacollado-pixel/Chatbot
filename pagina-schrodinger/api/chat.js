@@ -1,10 +1,9 @@
 // Archivo: pagina-schrodinger/api/chat.js
 
-// Función auxiliar para pausar la ejecución unos milisegundos
 const wait = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
 
 export default async function handler(req, res) {
-  // Configurar CORS
+  // Configuración de CORS
   res.setHeader('Access-Control-Allow-Origin', '*');
   res.setHeader('Access-Control-Allow-Methods', 'POST, OPTIONS');
   res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
@@ -58,19 +57,17 @@ REGLAS:
 - IMPORTANTE: No afirmes que tienes información específica de la página si no se te ha proporcionado en el contexto.
 `;
 
-  // Lista de modelos variando entre líneas Flash y Pro para máxima disponibilidad
+  // Nombres exactos compatibles con la API v1beta
   const modelsToTry = [
     'gemini-1.5-flash',
-    'gemini-1.5-pro',
-    'gemini-2.0-flash-exp',
-    'gemini-2.5-flash'
+    'gemini-1.5-pro'
   ];
 
-  let lastError = null;
+  let lastErrorDetail = "";
 
   for (const model of modelsToTry) {
-    // Intentaremos hasta 2 veces por cada modelo en caso de un 503 puntual
-    for (let attempt = 1; attempt <= 2; attempt++) {
+    // 3 reintentos con pausa para absorber los pico de saturación (503)
+    for (let attempt = 1; attempt <= 3; attempt++) {
       try {
         const url = `https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent?key=${apiKey}`;
 
@@ -98,27 +95,26 @@ REGLAS:
           return res.status(200).json({ reply });
         }
 
-        lastError = `[${model}] Error ${response.status}: ${data.error?.message || 'Error de servicio'}`;
+        lastErrorDetail = `[${model}] HTTP ${response.status}: ${data.error?.message || 'Error desconocido'}`;
 
-        // Si es 503 o 429 (saturación o límite de peticiones), esperamos 800ms e intentamos de nuevo
+        // Si es saturación (503) o cuota temporal (429), pausar antes de reintentar
         if (response.status === 503 || response.status === 429) {
-          console.warn(`Modelo ${model} ocupado (${response.status}). Intento ${attempt} de 2...`);
-          if (attempt < 2) await wait(800);
+          console.warn(`[${model}] Servidor ocupado (${response.status}). Reintento ${attempt} de 3...`);
+          if (attempt < 3) await wait(1200);
         } else {
-          // Si es un error distinto (como 400 Bad Request), saltamos al siguiente modelo inmediatamente
+          // Si es un error de formato u otro código, pasar al siguiente modelo de inmediato
           break;
         }
 
       } catch (err) {
-        lastError = err.message;
-        console.error(`Excepción conectando a ${model}:`, err);
+        lastErrorDetail = `Excepción en ${model}: ${err.message}`;
         break;
       }
     }
   }
 
-  // Si tras recorrer todos los modelos de respaldo sigue fallando
+  // Si tras 6 intentos totales (3 por modelo) persiste el fallo
   return res.status(503).json({
-    error: `Los servidores de Google se encuentran con alta demanda en este momento. Por favor, reintenta enviar tu mensaje en unos segundos.`
+    error: `No se pudo conectar con la API de Google. Detalle del último intento: ${lastErrorDetail}`
   });
 }
