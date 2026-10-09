@@ -54,41 +54,55 @@ REGLAS:
 - IMPORTANTE: No afirmes que tienes información específica de la página si no se te ha proporcionado en el contexto.
 `;
 
-  try {
-    // Llamada configurada para gemini-3.8-flash
-    const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-3.8-flash:generateContent?key=${apiKey}`;
+  // Lista de modelos ordenados por preferencia en caso de saturación (503)
+  const modelsToTry = [
+    'gemini-3.8-flash',
+    'gemini-2.5-flash',
+    'gemini-1.5-flash'
+  ];
 
-    const response = await fetch(url, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
-        system_instruction: {
-          parts: [{ text: systemInstruction }]
+  let lastError = null;
+
+  for (const model of modelsToTry) {
+    try {
+      const url = `https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent?key=${apiKey}`;
+
+      const response = await fetch(url, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
         },
-        contents: [
-          {
-            parts: [{ text: message }]
-          }
-        ]
-      }),
-    });
-
-    const data = await response.json();
-
-    if (!response.ok) {
-      console.error("Error devuelto por la API de Gemini:", data);
-      return res.status(response.status).json({ 
-        error: `Error de Google AI Studio (${response.status}): ${data.error?.message || 'Clave de API o petición inválida.'}` 
+        body: JSON.stringify({
+          system_instruction: {
+            parts: [{ text: systemInstruction }]
+          },
+          contents: [
+            {
+              parts: [{ text: message }]
+            }
+          ]
+        }),
       });
+
+      const data = await response.json();
+
+      if (response.ok) {
+        const reply = data.candidates?.[0]?.content?.parts?.[0]?.text || "No se pudo generar una respuesta válida.";
+        return res.status(200).json({ reply });
+      }
+
+      // Si el servidor está sobrecargado (503) o el modelo no está disponible, guardamos el error e intentamos el siguiente
+      lastError = `Error de Google AI Studio (${response.status}): ${data.error?.message || 'Error de servicio'}`;
+      console.warn(`El modelo ${model} fallo con estado ${response.status}. Intentando modelo alternativo...`);
+
+    } catch (err) {
+      lastError = err.message;
+      console.error(`Error al conectar con ${model}:`, err);
     }
-
-    const reply = data.candidates?.[0]?.content?.parts?.[0]?.text || "No se pudo generar una respuesta válida.";
-
-    return res.status(200).json({ reply });
-  } catch (error) {
-    console.error('Error durante la ejecución del servidor:', error);
-    return res.status(500).json({ error: `Error interno en el servidor: ${error.message}` });
   }
+
+  // Si todos los modelos fallan por saturación de Google
+  return res.status(503).json({
+    error: `Servidores de Google AI actualmente sobrecargados. Por favor intenta de nuevo en unos segundos. Detalle: ${lastError}`
+  });
 }
