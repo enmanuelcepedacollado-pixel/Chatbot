@@ -57,18 +57,18 @@ REGLAS:
 - IMPORTANTE: No afirmes que tienes información específica de la página si no se te ha proporcionado en el contexto.
 `;
 
-  // Nombres exactos compatibles con la API v1beta
+  // Modelos vigentes y totalmente soportados en Google AI Studio
   const modelsToTry = [
-    'gemini-1.5-flash',
-    'gemini-1.5-pro'
+    'gemini-2.0-flash',
+    'gemini-2.0-flash-lite'
   ];
 
   let lastErrorDetail = "";
 
   for (const model of modelsToTry) {
-    // 3 reintentos con pausa para absorber los pico de saturación (503)
     for (let attempt = 1; attempt <= 3; attempt++) {
       try {
+        // Usamos la API v1beta estandarizada de Google AI Studio
         const url = `https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent?key=${apiKey}`;
 
         const response = await fetch(url, {
@@ -97,12 +97,12 @@ REGLAS:
 
         lastErrorDetail = `[${model}] HTTP ${response.status}: ${data.error?.message || 'Error desconocido'}`;
 
-        // Si es saturación (503) o cuota temporal (429), pausar antes de reintentar
+        // Reintento en caso de saturación (503) o límite momentáneo (429)
         if (response.status === 503 || response.status === 429) {
           console.warn(`[${model}] Servidor ocupado (${response.status}). Reintento ${attempt} de 3...`);
           if (attempt < 3) await wait(1200);
         } else {
-          // Si es un error de formato u otro código, pasar al siguiente modelo de inmediato
+          // Si da un 404 u otro error distinto, saltar de inmediato al modelo alternativo
           break;
         }
 
@@ -113,7 +113,6 @@ REGLAS:
     }
   }
 
-  // Si tras 6 intentos totales (3 por modelo) persiste el fallo
   return res.status(503).json({
     error: `No se pudo conectar con la API de Google. Detalle del último intento: ${lastErrorDetail}`
   });
