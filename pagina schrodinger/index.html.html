@@ -1,0 +1,338 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>La Función de Onda de Schrödinger: Representación y Aplicaciones</title>
+  <link rel="stylesheet" href="styles.css">
+  <!-- Fuentes e iconos -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;600&family=Inter:wght@300;400;600;800&display=swap" rel="stylesheet">
+</head>
+<body>
+
+  <!-- Navegación -->
+  <header>
+    <nav class="navbar">
+      <div class="logo">Ψ Cuántica</div>
+      <ul class="nav-links">
+        <li><a href="#introduccion">Inicio</a></li>
+        <li><a href="#concepto">¿Qué es Ψ?</a></li>
+        <li><a href="#ecuacion">Ecuación</a></li>
+        <li><a href="#interpretacion">Interpretación</a></li>
+        <li><a href="#graficos">Gráficos</a></li>
+        <li><a href="#aplicaciones">Aplicaciones</a></li>
+        <li><a href="#particula-caja">Ejemplo Práctico</a></li>
+        <li><a href="#chatbot">Asistente IA</a></li>
+        <li><a href="#fuentes">Referencias</a></li>
+      </ul>
+    </nav>
+  </header>
+
+  <!-- Hero / Introducción -->
+  <section id="introduccion" class="hero-section">
+    <div class="hero-content">
+      <span class="badge">Mecánica Cuántica Educativa</span>
+      <h1>La Función de Onda de Schrödinger</h1>
+      <h2>Representación matemática y aplicaciones fundamentales en la física moderna</h2>
+      <p>
+        En la física clásica, el estado de una partícula se determina por su posición y velocidad. En el mundo atómico y subatómico, la mecánica cuántica sustituye estas certezas deterministas por amplitudes de probabilidad. La <strong>función de onda de Schrödinger</strong> es la herramienta matemática fundamental que describe el estado cuántico de un sistema.
+      </p>
+      <p>
+        Introducida por el físico austriaco <strong>Erwin Schrödinger</strong> en 1926, su ecuación diferencial revolucionó nuestra comprensión de la materia, permitiendo modelar desde la estructura del átomo de hidrógeno hasta las tecnologías semiconductoras actuales.
+      </p>
+    </div>
+  </section>
+
+  <main class="container">
+
+    <!-- Sección 2: ¿Qué es la función de onda? -->
+    <section id="concepto" class="card">
+      <h2>1. ¿Qué es la función de onda?</h2>
+      <p>
+        La función de onda suele representarse mediante la letra griega <strong>psi</strong>:
+      </p>
+      <div class="math-box">
+        <span class="formula">Ψ(x, t)</span> &nbsp;&nbsp;ó en 3D&nbsp;&nbsp; <span class="formula">Ψ(r, t)</span>
+      </div>
+      <p>
+        Matemáticamente, es una función de valores <strong>complejos</strong> (contiene la unidad imaginaria <em>i</em>). Sus variables son el espacio ($\mathbf{r}$ o $x$) y el tiempo ($t$).
+      </p>
+      <p>
+        <strong>Aclaración fundamental:</strong> La función de onda no representa una onda material física u ordinaria (como una ola de agua o una onda sonora). Su módulo al cuadrado ($|\Psi|^2$) proporciona la <strong>densidad de probabilidad</strong> de encontrar la partícula en un punto específico del espacio al realizar una medición.
+      </p>
+
+      <div class="grid-2">
+        <div class="feature-box">
+          <h3>Amplitud de Probabilidad</h3>
+          <p>Es el valor complejo $\Psi(x,t)$. Su magnitud al cuadrado determina la probabilidad real de medición.</p>
+        </div>
+        <div class="feature-box">
+          <h3>Fase Cuántica</h3>
+          <p>Ángulo de la función compleja que permite fenómenos de interferencia constructiva y destructiva.</p>
+        </div>
+        <div class="feature-box">
+          <h3>Superposición de Estados</h3>
+          <p>Un sistema puede estar en una combinación lineal de múltiples estados posibles hasta que interactúa o se mide.</p>
+        </div>
+        <div class="feature-box">
+          <h3>Normalización</h3>
+          <p>La suma total de probabilidades de encontrar la partícula en todo el espacio debe ser estrictamente igual a 1 (100%).</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- Sección 3: La Ecuación de Schrödinger -->
+    <section id="ecuacion" class="card">
+      <h2>2. La Ecuación de Schrödinger</h2>
+      <p>
+        La <strong>Ecuación de Schrödinger dependiente del tiempo</strong> rige la evolución temporal de la función de onda:
+      </p>
+      <div class="math-box highlight">
+        <span class="formula">iℏ ∂Ψ/∂t = ĤΨ</span>
+      </div>
+      
+      <div class="symbols-list">
+        <h3>Significado de los símbolos:</h3>
+        <ul>
+          <li><strong>i:</strong> Unidad imaginaria ($\sqrt{-1}$).</li>
+          <li><strong>ℏ (hbar):</strong> Constante reducida de Planck ($h / 2\pi$).</li>
+          <li><strong>Ψ:</strong> Función de onda del sistema.</li>
+          <li><strong>∂Ψ/∂t:</strong> Derivada parcial respectiva al tiempo (variación temporal).</li>
+          <li><strong>Ĥ:</strong> Operador Hamiltoniano, asociado a la energía total (cinética + potencial).</li>
+        </ul>
+      </div>
+
+      <p>Para una partícula no relativista de masa $m$ en un potencial $V(x,t)$ unidimensional, se escribe como:</p>
+      <div class="math-box">
+        <span class="formula">iℏ ∂Ψ/∂t = −(ℏ² / 2m) (∂²Ψ / ∂x²) + V(x,t)Ψ</span>
+      </div>
+
+      <hr>
+
+      <h3>Ecuación Independiente del Tiempo</h3>
+      <p>
+        Cuando el potencial $V(x)$ no depende del tiempo, podemos separar variables y obtener estados estacionarios con energía bien definida $E$:
+      </p>
+      <div class="math-box">
+        <span class="formula">Ĥφ = Eφ</span>
+      </div>
+      <p>
+        Esta es una <strong>ecuación de autovalores</strong> donde $\phi$ representa las autofunciones (estados estacionarios) y $E$ los autovalores de energía correspondientes.
+      </p>
+    </section>
+
+    <!-- Sección 4: Interpretación Física -->
+    <section id="interpretacion" class="card">
+      <h2>3. Interpretación Física (Interpretación de Born)</h2>
+      <p>
+        Propuesta por Max Born, establece la conexión entre la matemática abstracta compleja y la observación experimental:
+      </p>
+      <div class="math-box">
+        <span class="formula">ρ(x,t) = |Ψ(x,t)|² = Ψ*(x,t) · Ψ(x,t)</span>
+      </div>
+      <p>
+        Donde $\rho(x,t)$ es la <strong>densidad de probabilidad</strong> de posición. La probabilidad $P$ de encontrar la partícula entre dos coordenadas $a$ y $b$ es:
+      </p>
+      <div class="math-box">
+        <span class="formula">P(a ≤ x ≤ b) = ∫ₐᵇ |Ψ(x,t)|² dx</span>
+      </div>
+
+      <p><strong>Condición de Normalización:</strong> La certeza total de que la partícula existe en algún lugar del universo requiere:</p>
+      <div class="math-box">
+        <span class="formula">∫₋∞⁺∞ |Ψ(x,t)|² dx = 1</span>
+      </div>
+
+      <div class="note-box">
+        <strong>Diferencia clave:</strong> mientras que $\Psi(x,t)$ puede ser una magnitud compleja no medible directamente, $|\Psi(x,t)|^2$ es un número real, no negativo y directamente observable experimentalmente como distribución de probabilidad.
+      </div>
+    </section>
+
+    <!-- Sección 5: Representación Gráfica -->
+    <section id="graficos" class="card">
+      <h2>4. Representación Gráfica de la Función de Onda</h2>
+      <p>
+        Es vital diferenciar entre la parte real de la función de onda $Re[\Psi(x)]$ y la densidad de probabilidad $|\Psi(x)|^2$.
+      </p>
+      
+      <div class="graphic-grid">
+        <div class="graphic-card">
+          <svg viewBox="0 0 400 180" class="svg-diagram">
+            <!-- Ejes -->
+            <line x1="20" y1="90" x2="380" y2="90" stroke="#4a5568" stroke-width="2"/>
+            <line x1="200" y1="10" x2="200" y2="170" stroke="#4a5568" stroke-width="1" stroke-dasharray="4"/>
+            <!-- Onda Sinusoidal Re[Psi] -->
+            <path d="M 20 90 Q 65 10, 110 90 T 200 90 T 290 90 T 380 90" fill="none" stroke="#00f3ff" stroke-width="3"/>
+            <!-- Nodos -->
+            <circle cx="20" cy="90" r="4" fill="#bd00ff"/>
+            <circle cx="110" cy="90" r="4" fill="#bd00ff"/>
+            <circle cx="200" cy="90" r="4" fill="#bd00ff"/>
+            <circle cx="290" cy="90" r="4" fill="#bd00ff"/>
+            <circle cx="380" cy="90" r="4" fill="#bd00ff"/>
+          </svg>
+          <h4>Onda Sinusoidal Ilustrativa (Parte Real $Re[\Psi]$)</h4>
+          <p>Muestra oscilaciones con valores positivos y negativos. Los puntos morados indican <strong>nodos</strong> ($\Psi = 0$).</p>
+        </div>
+
+        <div class="graphic-card">
+          <svg viewBox="0 0 400 180" class="svg-diagram">
+            <!-- Ejes -->
+            <line x1="20" y1="160" x2="380" y2="160" stroke="#4a5568" stroke-width="2"/>
+            <!-- Densidad de Probabilidad |Psi|^2 -->
+            <path d="M 20 160 Q 65 20, 110 160 Q 155 20, 200 160 Q 245 20, 290 160 Q 335 20, 380 160" fill="rgba(0, 243, 255, 0.2)" stroke="#00f3ff" stroke-width="3"/>
+          </svg>
+          <h4>Densidad de Probabilidad ($|\Psi|^2$)</h4>
+          <p>Siempre no negativa ($\ge 0$). Eleva los valles negativos a crestas positivas, representando la probabilidad espacial.</p>
+        </div>
+      </div>
+      <p class="caption">Nota: Una curva sinusoidal es una simplificación ilustrativa y no representa la totalidad de los sistemas cuánticos reales.</p>
+    </section>
+
+    <!-- Sección 6: Aplicaciones en la Física -->
+    <section id="aplicaciones" class="card">
+      <h2>5. Aplicaciones en la Física y Tecnología</h2>
+      
+      <div class="apps-grid">
+        <div class="app-item">
+          <h3>1. Átomos y Orbitales Electrónicos</h3>
+          <p>Las soluciones tridimensionales en el átomo de hidrógeno generan los números cuánticos ($n, l, m$) y la forma de los orbitales ($s, p, d, f$), definiendo la química atómica.</p>
+        </div>
+
+        <div class="app-item">
+          <h3>2. Pozos de Potencial</h3>
+          <p>Las condiciones de frontera confinantes fuerzan la cuantización de los niveles de energía, impidiendo que las partículas tengan energías continuas.</p>
+        </div>
+
+        <div class="app-item">
+          <h3>3. Efecto Túnel Cuántico</h3>
+          <p>La función de onda no se anula instantáneamente dentro de una barrera de potencial. Esto permite que las partículas la atraviesen aun sin la energía clásica necesaria.</p>
+        </div>
+
+        <div class="app-item">
+          <h3>4. Oscilador Armónico Cuántico</h3>
+          <p>Modela las vibraciones moleculares y redes cristalinas. Demuestra la existencia de una energía de punto cero no nula en el estado fundamental.</p>
+        </div>
+
+        <div class="app-item">
+          <h3>5. Semiconductores y Electrónica</h3>
+          <p>La teoría de bandas derivada de soluciones cuánticas periódicas hace posible el diseño de transistores, diodos LED y chips de microprocesadores.</p>
+        </div>
+
+        <div class="app-item">
+          <h3>6. Microscopía y Tecnologías Avanzadas</h3>
+          <p>El microscopio de efecto túnel (STM) utiliza el tunelamiento de electrones para mapear superficies a escala atómica individual.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- Sección 7: Ejemplo Práctico -->
+    <section id="particula-caja" class="card">
+      <h2>6. Ejemplo Práctico: Partícula en una Caja</h2>
+      <p>
+        Considere una partícula confina en un pozo de potencial infinito unidimensional de longitud $L$ ($V=0$ para $0 < x < L$, y $V=\infty$ fuera).
+      </p>
+
+      <div class="math-box">
+        <p><strong>Funciones propias normalizadas:</strong></p>
+        <span class="formula">φₙ(x) = √(2 / L) · sin(n π x / L)</span>
+        <p style="margin-top: 10px;"><strong>Niveles de energía discretos:</strong></p>
+        <span class="formula">Eₙ = (n² π² ℏ²) / (2 m L²) &nbsp;&nbsp;&nbsp; (n = 1, 2, 3...)</span>
+      </div>
+
+      <p>Variables: <strong>n</strong> (número cuántico principal), <strong>m</strong> (masa de la partícula), <strong>L</strong> (ancho de la caja).</p>
+
+      <div class="states-diagram">
+        <div class="state-row">
+          <span class="state-label">n = 3 (2º Estado Excitado)</span>
+          <div class="state-graph">
+            <svg viewBox="0 0 300 60">
+              <rect width="300" height="60" fill="none" stroke="#2d3748"/>
+              <path d="M 0 30 Q 50 0, 100 30 T 200 30 T 300 30" fill="none" stroke="#00f3ff" stroke-width="2"/>
+            </svg>
+          </div>
+          <span>2 Nodos internos</span>
+        </div>
+
+        <div class="state-row">
+          <span class="state-label">n = 2 (1er Estado Excitado)</span>
+          <div class="state-graph">
+            <svg viewBox="0 0 300 60">
+              <rect width="300" height="60" fill="none" stroke="#2d3748"/>
+              <path d="M 0 30 Q 75 0, 150 30 T 300 30" fill="none" stroke="#00f3ff" stroke-width="2"/>
+            </svg>
+          </div>
+          <span>1 Nodo interno</span>
+        </div>
+
+        <div class="state-row">
+          <span class="state-label">n = 1 (Estado Fundamental)</span>
+          <div class="state-graph">
+            <svg viewBox="0 0 300 60">
+              <rect width="300" height="60" fill="none" stroke="#2d3748"/>
+              <path d="M 0 30 Q 150 0, 300 30" fill="none" stroke="#00f3ff" stroke-width="2"/>
+            </svg>
+          </div>
+          <span>0 Nodos internos</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- Sección 8: Chatbot Interactivo con Gemini -->
+    <section id="chatbot" class="card chatbot-section">
+      <h2>7. Asistente Cuántico (IA con Gemini)</h2>
+      <p>
+        Utiliza nuestro asistente interactivo configurado con la tecnología de Google AI Studio / Gemini para resolver tus dudas sobre ondas de Schrödinger, niveles de energía u orbitales.
+      </p>
+
+      <!-- Integración No-Code de Chatbot (Voiceflow/Zapier/Custom Embed) -->
+      <div class="chat-container-placeholder">
+        <div class="chat-header">
+          <span class="status-dot"></span> Asistente Cuántico - Gemini Engine
+        </div>
+        <div class="chat-body-mock">
+          <iframe 
+            src="https://copilotstudio.microsoft.com/ or_voiceflow_or_zapier_embed_url" 
+            title="Asistente Cuántico Gemini"
+            class="chat-iframe"
+            loading="lazy">
+          </iframe>
+          <div class="iframe-fallback">
+            <p><strong>Nota de Integración No-Code:</strong></p>
+            <p>Para visualizar la ventana de chat activa sin usar JavaScript en este código:</p>
+            <ul>
+              <li>Crea un Agente en Voiceflow, Zapier Interfaces o Google Dialogflow utilizando la API de Gemini.</li>
+              <li>Sustituye la propiedad <code>src</code> del <code>iframe</code> anterior por la URL del widget público provisto por la plataforma No-Code.</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Sección 9: Conclusión -->
+    <section class="card">
+      <h2>8. Conclusión</h2>
+      <p>
+        La función de onda de Schrödinger ($\Psi$) transformó radicalmente la física al reemplazar las trayectorias rígidas de la física clásica por campos de probabilidad matemática. A través de la interpretación de Born, la mecánica cuántica vincula el rigor algebraico con las observaciones experimentales, sustentando tecnologías clave del siglo XXI como los semiconductores, los láseres, la resonancia magnética y la computación cuántica.
+      </p>
+    </section>
+
+    <!-- Sección 10: Fuentes y Referencias -->
+    <section id="fuentes" class="card">
+      <h2>9. Fuentes y Referencias Consultadas</h2>
+      <ul class="references-list">
+        <li><strong>Griffiths, D. J.</strong> (2018). <em>Introduction to Quantum Mechanics</em> (3rd ed.). Cambridge University Press.</li>
+        <li><strong>Eisberg, R., & Resnick, R.</strong> (1985). <em>Física Cuántica: Átomos, Moléculas, Sólidos, Núcleos y Partículas</em>. Limusa.</li>
+        <li><strong>Feynman, R. P., Leighton, R. B., & Sands, M.</strong> (2011). <em>The Feynman Lectures on Physics, Vol. III: Quantum Mechanics</em>. Basic Books.</li>
+        <li><strong>MIT OpenCourseWare:</strong> <em>Quantum Physics I (8.04)</em>, Massachusetts Institute of Technology.</li>
+      </ul>
+    </section>
+
+  </main>
+
+  <footer>
+    <p>© 2026 Plataforma Educativa de Física Cuántica. Diseñado con HTML y CSS exclusivamente.</p>
+  </footer>
+
+</body>
+</html>
